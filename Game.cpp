@@ -13,27 +13,35 @@ const int JIMMI = 0;
 const int BOT = 1;
 
 /*
+Game logic: first of all we inialize global variable (GAME_STATE,PLAYER_STATE,BOT_STATE,CURRENT). Further 
+game set first player (Ogre or Jimmi) and in the process swaps them (function gswap). When player do move 
+he enter one of the number to do action (below). 
+
+When we set PLAYER_STATE and CURRENT we can call function game which distributes the functions 
+of impact, protection and treatment for current player.
+
+*/
+
+
+/*
 
 Game states
-
 1(2)13 - lose (Jimmi, Bot) 
 19 - in process
 
-
 Players states
-
 27 - hit
 70 - defense
 103 - heal
-
 666 - exit
 
 Current player
-
 0 - Jimmi
 1 - Bot
 
 */
+
+
 
 vector<int> bot_move = {27, 70, 103};
 
@@ -48,16 +56,16 @@ vector<int> bot_defense(5);
 vector<int> bot_healing(3);
 int bot_health;
 
-void init_array(vector<int>& arr, int n = 11);
-void hit(vector<int> from);
+void init_array(vector<int>& arr, int n = 11); // Fill array random numbers
+void hit(vector<int> from); // from - this is attacker
 void defend(vector<int> defense);
 void heal(vector<int>& heals);
-void check_hp();
-void game();
-void gswap(int& val);
-void show_array(vector<int> arr);
-void show_game();
-void initialize_game();
+void check_hp(); // Check Ogre and Jimmi health, then update GAME_STATS 
+void game(); // Logical core
+void gswap(int& val); // Change current player (0 to 1 or 1 to 0)
+void show_array(vector<int> arr); 
+void show_game(); // Show all playes and bot characteristics
+void initialize_game(); // Initialize global game variables
 
 int main() {
 	
