@@ -35,7 +35,7 @@ Current player
 
 */
 
-const vector<int> bot_move{27, 70, 103};
+vector<int> bot_move = {27, 70, 103};
 
 vector<int> player_hit(7);
 vector<int> player_defense(5);
@@ -57,26 +57,13 @@ void game();
 void gswap(int& val);
 void show_array(vector<int> arr);
 void show_game();
+void initialize_game();
 
 int main() {
-	setlocale(LC_ALL,"Russian");
-	srand((unsigned)time(NULL));
-	init_array(player_defense);
-	init_array(player_healing, 99);
-	init_array(player_hit);
-
-	init_array(bot_defense);
-	init_array(bot_healing, 99);
-	init_array(bot_hit);
-
-	player_health = 100;
-	bot_health = 100;
+	
+	initialize_game();
 
 	int tmp = 0;
-
-	GAME_STATE = 19;
-
-	CURRENT = rand() % 2;
 
 	cout << "Здравствуй, путник! Я великий маг северного Королевства! Мне нужна твоя помощь для того, чтобы добраться до далекого царства, но мне"
 			"мешает злой огр, преграждающий мне путь к мосту. Убей его и тогда награда не заставит себя ждать." << endl;
@@ -99,14 +86,14 @@ int main() {
 		check_hp();
 		if (GAME_STATE == 19) {
 			cout << "Бой идёт." << endl;
-			break;
 		}
 		if (GAME_STATE == 113) {
 			cout << "Ты ,истекая кровью, видишь уродливое лицо огра, а потом его пятку." << endl;
 			break;
 		}
 		if (GAME_STATE == 213) {
-			cout << "Огр на последних силах пытается защищаться, но вы нанесли ему смертельные раны. Огр пал, маг дал вам волшебный свиток, на котором была нарисована карта, а ней только красная точка в горах..." << endl;
+			cout << "Огр на последних силах пытается защищаться, но вы нанесли ему смертельные раны. Огр пал, "
+					"маг дал вам волшебный свиток, на котором была нарисована карта, а ней только красная точка в горах..." << endl;
 			break;
 		}
 		gswap(CURRENT);
@@ -131,6 +118,25 @@ int main() {
 	}
 
 	return 0;
+}
+
+void initialize_game() {
+	setlocale(LC_ALL, "Russian");
+	srand((unsigned)time(NULL));
+	init_array(player_defense);
+	init_array(player_healing, 99);
+	init_array(player_hit);
+
+	init_array(bot_defense);
+	init_array(bot_healing, 99);
+	init_array(bot_hit);
+
+	player_health = 100;
+	bot_health = 100;
+
+	GAME_STATE = 19;
+
+	CURRENT = 1;
 }
 
 void show_array(vector<int> arr) {
@@ -181,15 +187,15 @@ void game() {
 		{
 		case 27:
 			hit(player_hit);
-			cout << "Клинок, сияя на солнце, проходит как ветер по телу огра!";
+			cout << "Клинок, сияя на солнце, проходит как ветер по телу огра!" << endl;
 			return;
 		case 70:
 			defend(player_defense);
-			cout << "Щит подареный твоим отцом отлично защищает не только от ударов, но и от стрел";
+			cout << "Щит подареный твоим отцом отлично защищает не только от ударов, но и от стрел" << endl;
 			return;
 		case 103:
 			heal(player_healing);
-			cout << "Здоровье превыше всего! Но думаю лишняя пинта не помешает";
+			cout << "Здоровье превыше всего! Но думаю лишняя пинта не помешает" << endl;
 			return;
 		default:
 			cout << " Что-то странное. Ты точно всё правильно сделал? " << endl;
@@ -245,7 +251,6 @@ void hit(vector<int> from) {
 void heal(vector<int>& heals) {
 	if (heals.size()==0)
 	{
-
 		return;
 	}
 	int n = rand()%heals.size();
@@ -266,6 +271,10 @@ void heal(vector<int>& heals) {
 			bot_health -= bot_health % 100;
 		}
 		heals.erase(heals.begin() + n);
+		if (heals.size()==0)
+		{
+			bot_move.pop_back();
+		}
 		return;
 	default:
 		cout << " Что-то странное. Ты точно всё правильно сделал? " << endl;
