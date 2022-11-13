@@ -119,7 +119,7 @@ int main() {
 		if (CURRENT == BOT)
 		{
 			cout << "Твой противник что-то задумал. Интересно что?" << endl;
-			BOT_STATE = bot_move[rand()%3];
+			BOT_STATE = bot_move[rand()%bot_move.size()];
 		}
 		game();
 		show_game();
